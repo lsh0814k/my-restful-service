@@ -1,0 +1,13 @@
+### 전체 유저 조회
+GET {{review-api}}/users
+Content-Type: application/json
+
+### 특정 유저 조회
+GET {{review-api}}/users/1
+Content-Type: application/json
+
+### 유저 저장
+POST {{review-api}}/users
+Content-Type: application/json
+
+{"name": "jane"}
