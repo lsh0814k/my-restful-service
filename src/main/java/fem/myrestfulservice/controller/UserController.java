@@ -2,6 +2,7 @@ package fem.myrestfulservice.controller;
 
 import fem.myrestfulservice.bean.User;
 import fem.myrestfulservice.dao.UserDaoService;
+import fem.myrestfulservice.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User retrieveUser(@PathVariable Long id) {
-        return userDaoService.findOne(id);
+        User user = userDaoService.findOne(id);
+        if (user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        return user;
     }
 
     @PostMapping
