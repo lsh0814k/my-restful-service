@@ -42,4 +42,12 @@ public class UserController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        User user = userDaoService.delete(id);
+        if (user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+    }
 }
