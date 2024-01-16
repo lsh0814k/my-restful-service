@@ -15,3 +15,10 @@ Content-Type: application/json
 ### 유저 삭제
 DELETE {{review-api}}/users/1
 Content-Type: application/json
+
+### field validation (국문)
+POST {{review-api}}/users
+Content-Type: application/json
+Accept-Language: en
+
+{"name": "a"}
