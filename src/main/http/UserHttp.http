@@ -11,3 +11,7 @@ POST {{review-api}}/users
 Content-Type: application/json
 
 {"name": "jane"}
+
+### 유저 삭제
+DELETE {{review-api}}/users/1
+Content-Type: application/json
