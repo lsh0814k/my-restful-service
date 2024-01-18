@@ -15,9 +15,9 @@ public class UserDaoService {
     private static Long userCount = 3L;
 
     static {
-        users.add(new User(1L, "kenneth", LocalDateTime.now()));
-        users.add(new User(2L, "Alice", LocalDateTime.now()));
-        users.add(new User(3L, "Elena", LocalDateTime.now()));
+        users.add(new User(1L, "kenneth", LocalDateTime.now(), "test1", "111111"));
+        users.add(new User(2L, "Alice", LocalDateTime.now(), "test2", "222222"));
+        users.add(new User(3L, "Elena", LocalDateTime.now(), "test3", "333333"));
     }
 
     public List<User> findAll() {

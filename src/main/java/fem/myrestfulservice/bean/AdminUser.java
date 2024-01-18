@@ -1,16 +1,19 @@
 package fem.myrestfulservice.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class User {
+@JsonFilter("UserInfo")
+@NoArgsConstructor
+public class AdminUser {
     private Long id;
     @Min(value = 2, message = "name은 2글자 이상 입력해주세요.")
     private String name;
@@ -19,4 +22,6 @@ public class User {
 
     private String password;
     private String ssn;
+
+
 }
