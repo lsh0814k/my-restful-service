@@ -23,10 +23,13 @@ Accept-Language: en
 
 {"name": "a"}
 
-### admin 유저 조회
-GET {{review-api}}/admin/users/1
+### admin 유저 조회 v1
+GET {{review-api}}/admin/v1/users/1
 Content-Type: application/json
 
+### admin 유저 조회 v2
+GET {{review-api}}/admin/v2/users/1
+Content-Type: application/json
 
 ### admin 전체 유저
 GET {{review-api}}/admin/users
