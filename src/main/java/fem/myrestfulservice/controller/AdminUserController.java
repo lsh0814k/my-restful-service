@@ -25,7 +25,9 @@ import java.util.List;
 public class AdminUserController {
     private final UserDaoService userDaoService;
 
-    @GetMapping("/users")
+    //@GetMapping(value = "/users", params = "version=1")
+    //@GetMapping(value = "/users", headers = "X-API-VERSION=1")
+    @GetMapping(value = "/users", produces = "application/appv1+json")
     public MappingJacksonValue retrieveAllUsers() {
         List<User> users = userDaoService.findAll();
         List<AdminUser> adminUsers = new ArrayList<>();
@@ -38,7 +40,28 @@ public class AdminUserController {
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate", "ssn");
         SimpleFilterProvider provider = new SimpleFilterProvider().addFilter("UserInfo", filter);
 
-        MappingJacksonValue mapping = new MappingJacksonValue(users);
+        MappingJacksonValue mapping = new MappingJacksonValue(adminUsers);
+        mapping.setFilters(provider);
+        return mapping;
+    }
+
+    //@GetMapping(value = "/users", params = "version=2")
+    //@GetMapping(value = "/users", headers = "X-API-VERSION=2")
+    @GetMapping(value = "/users", produces = "application/appv2+json")
+    public MappingJacksonValue retrieveAllAdminUsers() {
+        List<User> users = userDaoService.findAll();
+        List<AdminUserV2> adminUsers = new ArrayList<>();
+        for (User user: users) {
+            AdminUserV2 adminUser = new AdminUserV2();
+            BeanUtils.copyProperties(user, adminUser);
+            adminUser.setGrade("VIP");
+            adminUsers.add(adminUser);
+        }
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate", "grade");
+        SimpleFilterProvider provider = new SimpleFilterProvider().addFilter("UserInfoV2", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(adminUsers);
         mapping.setFilters(provider);
         return mapping;
     }
