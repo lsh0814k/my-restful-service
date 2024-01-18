@@ -5,12 +5,16 @@ import fem.myrestfulservice.dao.UserDaoService;
 import fem.myrestfulservice.exception.UserNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,13 +28,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User retrieveUser(@PathVariable Long id) {
+    public EntityModel<User> retrieveUser(@PathVariable Long id) {
         User user = userDaoService.findOne(id);
         if (user == null) {
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
 
-        return user;
+        EntityModel<User> entityModel = EntityModel.of(user);
+        entityModel.add(
+                linkTo(methodOn(this.getClass())
+                .retrieveAllUsers())
+                .withRel("all-users"));
+        return entityModel;
     }
 
     @PostMapping
