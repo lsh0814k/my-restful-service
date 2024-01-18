@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import fem.myrestfulservice.bean.AdminUser;
+import fem.myrestfulservice.bean.AdminUserV2;
 import fem.myrestfulservice.bean.User;
 import fem.myrestfulservice.dao.UserDaoService;
 import fem.myrestfulservice.exception.UserNotFoundException;
@@ -20,11 +21,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/users")
+@RequestMapping("/admin")
 public class AdminUserController {
     private final UserDaoService userDaoService;
 
-    @GetMapping
+    @GetMapping("/users")
     public MappingJacksonValue retrieveAllUsers() {
         List<User> users = userDaoService.findAll();
         List<AdminUser> adminUsers = new ArrayList<>();
@@ -42,7 +43,7 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/users/{id}")
     public MappingJacksonValue retrieveUserForAdmin(@PathVariable Long id) {
         User user = userDaoService.findOne(id);
         if (user == null) {
@@ -54,6 +55,26 @@ public class AdminUserController {
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate", "ssn");
         FilterProvider provider = new SimpleFilterProvider().addFilter("UserInfo", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(adminUser);
+        mapping.setFilters(provider);
+
+        return mapping;
+    }
+
+    @GetMapping("/v2/users/{id}")
+    public MappingJacksonValue retrieveUserForAdminV2(@PathVariable Long id) {
+        User user = userDaoService.findOne(id);
+        if (user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        AdminUserV2 adminUser = new AdminUserV2();
+        BeanUtils.copyProperties(user, adminUser);
+        adminUser.setGrade("VIP");
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate", "grade");
+        FilterProvider provider = new SimpleFilterProvider().addFilter("UserInfoV2", filter);
 
         MappingJacksonValue mapping = new MappingJacksonValue(adminUser);
         mapping.setFilters(provider);
