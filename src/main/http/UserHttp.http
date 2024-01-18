@@ -22,3 +22,12 @@ Content-Type: application/json
 Accept-Language: en
 
 {"name": "a"}
+
+### admin 유저 조회
+GET {{review-api}}/admin/users/1
+Content-Type: application/json
+
+
+### admin 전체 유저
+GET {{review-api}}/admin/users
+Content-Type: application/json
