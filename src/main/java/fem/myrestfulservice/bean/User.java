@@ -1,18 +1,26 @@
 package fem.myrestfulservice.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @Schema(description = "사용자 상세 정보를 위한 도메인 객체")
+@Entity
+@NoArgsConstructor
+@Table(name = "users")
 public class User {
+    @Id @GeneratedValue
     @Schema(title = "사용자 ID", description = "사용자 ID는 자동 생성됩니다.")
     private Long id;
 
