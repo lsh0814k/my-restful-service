@@ -3,7 +3,8 @@ spring:
     basename: messages, errors
 
 management:
-  endpoint:
+  endpoints:
     web:
       exposure:
         include: "*"
+
