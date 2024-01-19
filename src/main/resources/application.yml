@@ -1,3 +1,9 @@
 spring:
   messages:
     basename: messages, errors
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: "*"
